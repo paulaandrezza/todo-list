@@ -11,7 +11,7 @@
   flex-direction: column;
   padding: 2rem;
 
-  width: 400px;
+  width: 100%;
 }
 
 header form{
@@ -124,4 +124,16 @@ header input {
   font-size: 1.6rem;
   color: #FD355A;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .todo {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .todo {
+    width: 50%;
+  }
 }
