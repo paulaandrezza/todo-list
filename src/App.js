@@ -7,8 +7,6 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
 function App() {
 
   const [task, setTask] = useState("")
@@ -46,8 +44,7 @@ function App() {
   }
 
   useEffect(() => { 
-    localStorage.setItem("tasks", JSON.stringify(tasks)); 
-    console.log(tasks, localStorage.getItem("tasks"))
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   return (
