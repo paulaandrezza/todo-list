@@ -2,18 +2,21 @@ import "./global.css";
 import "./styles.css";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineClose } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function App() {
 
   const [task, setTask] = useState("")
 
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState(localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : [])
 
-  function handleCreateTask() {
+  function handleCreateTask(event) {
+    event.preventDefault();
     if (task === "") {
       // Error message
       toast.error("Digite alguma task")
@@ -23,11 +26,7 @@ function App() {
       const newTask = { id: idRandom(1000000), title: task, isComplete: false }
 
       setTasks([ ...tasks, newTask ])
-
       setTask("")
-
-      // TODO: Utilizar o localStorage para armazenar as tasks do usuário
-
     }
   }
 
@@ -36,7 +35,6 @@ function App() {
       if(task.id === id) {
         return{ ...task, isComplete: !task.isComplete }
       }
-
       return task
     })
 
@@ -47,6 +45,11 @@ function App() {
     setTasks(tasks.filter(remove => remove.id !== id))
   }
 
+  useEffect(() => { 
+    localStorage.setItem("tasks", JSON.stringify(tasks)); 
+    console.log(tasks, localStorage.getItem("tasks"))
+  }, [tasks]);
+
   return (
     <div className="app">
 
@@ -55,10 +58,10 @@ function App() {
       <div className="todo">
 
         <header>
-
-          <input type="text" value={task} onChange={(ev) => setTask(ev.target.value)} />
-
-          <button onClick={handleCreateTask}><IoMdAdd /></button>
+          <form onSubmit={handleCreateTask}>
+            <input type="text" value={task} onChange={(ev) => setTask(ev.target.value)} placeholder="Digite uma tarefa" autoFocus/>
+            <button type="submit"><IoMdAdd /></button>
+          </form>
 
         </header>
 
@@ -67,7 +70,7 @@ function App() {
           <div key={task.id} className={task.isComplete ? "task-container completed" : "task-container"}>
           <div className="check-and-title">
             <label className="checkbox-container">
-              <input type="checkbox" onClick={() => handleToggleTaskCompletion(task.id)} />
+              <input type="checkbox" onClick={() => handleToggleTaskCompletion(task.id)} checked={task.isComplete ? true : false}/>
               <span className="checkmark"></span>
             </label>
             <p>{task.title}</p>
