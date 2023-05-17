@@ -26,7 +26,6 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - LocalStorage
 - React
 - React Hooks (useState, useEffect)
-- LocalStorage
 
 <br>
 
